@@ -7,8 +7,8 @@ DATA = {
         'соль, ч.л.': 0.5,
     },
     'pasta': {
-        'макароны, г': 0.3,
-        'сыр, г': 0.05,
+        'макароны, кг': 0.3,
+        'сыр, кг': 0.05,
     },
     'buter': {
         'хлеб, ломтик': 1,
@@ -16,7 +16,7 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
-    # можете добавить свои рецепты ;)
+    # можете добавить свои рецепты
 }
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
@@ -28,3 +28,25 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+
+
+def products_view(request, dish):
+    servings = request.GET.get("servings")
+    if not servings:
+        servings = 1
+    try:
+        servings = int(servings)
+    except ValueError:
+        servings = 1
+    dish_dict = DATA.get(dish)
+    if not dish_dict:
+        return render(request, 'calculator/index.html', {})
+
+    for k, v in dish_dict.items():
+        dish_dict[k] = round(v * servings, 3)
+
+    context = {'recipe':  dish_dict}
+
+    print(context)
+
+    return render(request, 'calculator/index.html', context)
