@@ -17,3 +17,10 @@ settings_local.py
 
 ### OS specific ###
 .DS_Store
+
+### Mine
+mine/
+.env
+*.tmp
+*.temp
+*.ini
