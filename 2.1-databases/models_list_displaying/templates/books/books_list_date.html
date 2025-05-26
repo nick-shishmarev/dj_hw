@@ -20,5 +20,16 @@
             </div>
             {% endfor %}
         </div>
+        <div style="margin-top: 100px">
+            <p>
+                {% if date_previous != none %}
+                    <a href="{% url 'date' date_previous %}">< {{ date_previous }} </a>
+                {% endif %}
+
+                {% if date_next != none %}
+                    <a href="{% url 'date' date_next %}"> {{ date_next }} ></a>
+                {% endif %}
+            </p>
+        </div>
     </div>
 {% endblock %}
