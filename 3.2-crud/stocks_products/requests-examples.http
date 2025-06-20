@@ -13,6 +13,28 @@ Content-Type: application/json
 
 ###
 
+# создание продукта
+POST {{baseUrl}}/products/
+Content-Type: application/json
+
+{
+  "title": "Картофель",
+  "description": "Отборный, вкусный"
+}
+
+###
+
+# создание продукта
+POST {{baseUrl}}/products/
+Content-Type: application/json
+
+{
+  "title": "Огурец",
+  "description": "Сочный, зрустящий"
+}
+
+###
+
 # получение продуктов
 GET {{baseUrl}}/products/
 Content-Type: application/json
@@ -20,7 +42,7 @@ Content-Type: application/json
 ###
 
 # обновление продукта
-PATCH {{baseUrl}}/products/1/
+PATCH {{baseUrl}}/products/2/
 Content-Type: application/json
 
 {
@@ -41,12 +63,18 @@ Content-Type: application/json
 
 ###
 
+# поиск продуктов по названию и описанию
+GET {{baseUrl}}/products/?search=картоф
+Content-Type: application/json
+
+###
+
 # создание склада
 POST {{baseUrl}}/stocks/
 Content-Type: application/json
 
 {
-  "address": "мой адрес не дом и не улица, мой адрес сегодня такой: www.ленинград-спб.ru3",
+  "address": "склад 3",
   "positions": [
     {
       "product": 2,
@@ -64,7 +92,7 @@ Content-Type: application/json
 ###
 
 # обновляем записи на складе
-PATCH {{baseUrl}}/stocks/4/
+PATCH {{baseUrl}}/stocks/1/
 Content-Type: application/json
 
 {
@@ -85,5 +113,5 @@ Content-Type: application/json
 ###
 
 # поиск складов, где есть определенный продукт
-GET {{baseUrl}}/stocks/?products=2
+GET {{baseUrl}}/stocks/?products=3&limit=1
 Content-Type: application/json
