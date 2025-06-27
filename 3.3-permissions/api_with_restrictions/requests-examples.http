@@ -1,6 +1,6 @@
 # примеры API-запросов
 
-@baseUrl = https://localhost:8000/api
+@baseUrl = http://localhost:8000/api
 
 # получение объявлений
 GET {{baseUrl}}/advertisements/
@@ -11,7 +11,7 @@ Content-Type: application/json
 # создание объявления
 POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
+Authorization: Token 8782b9516172793cc8aa58e2a47349fb9bfc5042
 
 {
   "title": "Шкаф IKEA",
@@ -20,10 +20,34 @@ Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
 
 ###
 
-# попытка поменять объявление
-PATCH {{baseUrl}}/advertisements/1/
+# создание объявления
+POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
+Authorization: Token 8782b9516172793cc8aa58e2a47349fb9bfc5042
+
+{
+  "title": "Ноутбук продам",
+  "description": "Срочно"
+}
+
+###
+
+# создание объявления
+POST {{baseUrl}}/advertisements/
+Content-Type: application/json
+Authorization: Token 3921ef21462cfa0269a3d41ab2512f9097dcd514
+
+{
+  "title": "Куплю диван",
+  "description": "Срочно"
+}
+
+###
+
+# попытка поменять объявление
+PATCH {{baseUrl}}/advertisements/2/
+Content-Type: application/json
+Authorization: Token 3921ef21462cfa0269a3d41ab2512f9097dcd514
 
 {
   "status": "CLOSED"
@@ -31,12 +55,39 @@ Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
 
 ###
 
+# попытка поменять объявление
+PATCH {{baseUrl}}/advertisements/4/
+Content-Type: application/json
+Authorization: Token 8782b9516172793cc8aa58e2a47349fb9bfc5042
+
+{
+  "status": "OPEN"
+}
+
+###
+
 # фильтрация по создателю
-GET {{baseUrl}}/advertisements/?creator=3
+GET {{baseUrl}}/advertisements/?creator=1
 Content-Type: application/json
 
 ###
 
-# фильтрация по дате
-GET {{baseUrl}}/advertisements/?created_at_before=2020-10-01
+# фильтрация по создателю
+GET {{baseUrl}}/advertisements/?search=ноут&ordering=id
 Content-Type: application/json
+
+###
+
+GET {{baseUrl}}/advertisements/?ordering=id
+
+###
+
+# фильтрация по дате
+GET {{baseUrl}}/advertisements/?created_at_before=2025-06-25
+Content-Type: application/json
+
+###
+
+DELETE {{baseUrl}}/advertisements/14/
+Content-Type: application/json
+Authorization: Token 3921ef21462cfa0269a3d41ab2512f9097dcd514

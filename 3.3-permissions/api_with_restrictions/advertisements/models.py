@@ -2,6 +2,9 @@ from django.conf import settings
 from django.db import models
 
 
+MAX_OPEN = 10
+
+
 class AdvertisementStatusChoices(models.TextChoices):
     """Статусы объявления."""
 
