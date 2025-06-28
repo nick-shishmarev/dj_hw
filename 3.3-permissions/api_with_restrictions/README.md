@@ -15,7 +15,95 @@
 - для неавторизованных пользователей: 10 запросов в минуту;
 - для авторизованных пользователей: 20 запросов в минуту.
 
-## Реализация
+## Описание реализации
+
+1. Создание объявления
+``` 
+POST {{baseUrl}}/advertisements/
+Content-Type: application/json
+Authorization: Token <user token>
+
+{
+  "title": "Заголовок",
+  "description": "Текст"
+}
+```
+Создавать объявления могут только авторизованные пользователи.
+
+При добавлении объявления ему присваивается статус "Черновик" (DRAFT)
+
+2. Просмотр объявлений 
+```
+GET {{baseUrl}}/advertisements/; 
+```
+одного объявления 
+```
+GET {{baseUrl}}/advertisements/<pk>/
+```
+Просматиривать все объявления кроме черновиков (DRAFT) могут все пользователи, включая неавторизованных.
+
+Просматиривать черновик (DRAFT) может только его авторизованный владелец.
+
+3. Изменение обявления
+``` 
+PATCH {{baseUrl}}/advertisements/<pk>/
+Content-Type: application/json
+Authorization: Token <user token>
+
+{
+  "status": "Новый статус"
+}
+```
+4. Удаление объявления
+```
+DELETE {{baseUrl}}/advertisements/<pk>/
+Content-Type: application/json
+Authorization: Token <user token>
+```
+5. Пользователи, не имеющие права админов могут изменять и удалять только свои объявления.
+
+Админы могут изменять и удалять любые объявления.
+
+6. Добавление объявления в "Избранные"
+```
+POST {{baseUrl}}/advertisements/<pk>/makefavorits/
+Content-Type: application/json
+Authorization: Token <user token>
+```
+В "Избранные" любой авторизованный пользователь может добавлять только чужие объявления, кроме черновиков.
+
+7. Просмотр "Избранных"
+```
+GET {{baseUrl}}/advertisements/getfavorits/
+Content-Type: application/json
+Authorization: Token <user token>
+```
+Любой авторизованный пользователь может просмотреть только свои "Избранные" объявления.
+
+8. Удаление "Избранных"
+```
+DELETE {{baseUrl}}/advertisements/<pk>/delfavorits/
+Content-Type: application/json
+Authorization: Token <user token>
+```
+Любой авторизованный пользователь может удалить объявление только из своего набора "Избранных".
+
+9. Фильтрация просматриваемых объявлений
+```
+?creator=id - по id сохдателя объявления
+?status=OPEN | CLOSED | DRAFT - по статусу объявления
+?created_at_after=yyyy-mm-dd - размещённые после указанной даты, включая её
+?created_at_before=yyyy-mm-dd - размещённые до указанной даты, включая её
+?search=текст - содержащие указанный текст  в username создателя', заголовке или тексте объявления
+```
+10. Сортировка объявлений
+```
+?ordering=id - по id объявления
+?ordering=creator - по id создателя объявления
+?ordering=created_at = по дате создания
+```
+
+## Рекомендации Реализации
 
 - Используйте `DateFromToRangeFilter` для фильтрации по дате https://django-filter.readthedocs.io/en/stable/ref/filters.html#datefromtorangefilter.
 

@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from advertisements.models import Advertisement, AdvertisementStatusChoices, MAX_OPEN
+from advertisements.models import Advertisement, AdvertisementStatusChoices, Favorites
+from api_with_restrictions.settings import MAX_OPEN
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -42,11 +43,22 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
         # TODO: добавьте требуемую валидацию
 
-        if (data.get("status") == AdvertisementStatusChoices.OPEN or
-                self.context['view'].action == 'create'):
+        if data.get("status") == AdvertisementStatusChoices.OPEN:
             open_count = (Advertisement.objects.filter(creator=self.context["request"].user.id)
                           .filter(status=AdvertisementStatusChoices.OPEN)).count()
             if open_count >= MAX_OPEN:
                 raise ValidationError(f"Слишком много открытых объявлений (максимум {MAX_OPEN})")
 
         return data
+
+
+class FavoritesSerializer(serializers.ModelSerializer):
+    """Serializer для объявления."""
+
+    advertisementa = AdvertisementSerializer(
+        read_only=True,
+    )
+
+    class Meta:
+        model = Favorites
+        fields = ('id', 'user', 'advertisements',)
